@@ -7,6 +7,7 @@
 <body>
     <div id="app">
 		<template v-if="step===1">
+			<p>1.请问你的性别是:</p>
 			<input type="radio" v-model="picked" value="male" id="male">
 			<label for="html">男 </label>
 			<input type="radio" v-model="picked" value="female" id="female">
@@ -17,10 +18,11 @@
 			<br>
 			<br>
 			<br>
-			<button @click="step=step+1">下一步</button>
+			<button @click="step=step+1" :disabled="onedis">下一步</button>
 			<button @click="reset">重置</button>
 		</template>
 		<template v-if="step===2">
+			<p>2.请选择你的兴趣爱好:</p>
 			<input type="checkbox" v-model="checked" value="football" id="football">
 			<label for="html">足球</label>
 			<br>
@@ -36,17 +38,15 @@
 			<input type="checkbox" v-model="checked" value="painting" id="painting">
 			<label for="css">画画</label>
 			<br>
-			<p>选择的项是：{{ checked }}</p>
-			<button @click="step=step+1">下一步</button>
+			<button @click="step=step+1" :disabled="twodis">下一步</button>
 			<button @click="step=step-1">上一步</button>
 			<button @click="reset">重置</button>
 		</template>
 		<template v-if="step===3">
-			<p>介绍你自己</p>
-			<textarea v-model="text" placeholder="输入..."></textarea>
+			<p>请介绍一下自己</p>
+			<textarea v-model="text" rows="10" cols="30" placeholder="输入..."></textarea>
 			<br>
-			<p>输入的是：{{ text }}</p>
-			<button @click="clicksuccess">提交</button>
+			<button @click="clicksuccess" :disabled="threedis">提交</button>
 			<button @click="step=step-1">上一步</button>
 			<button @click="reset">重置</button>
 		</template>	
@@ -60,7 +60,7 @@ var app = new Vue({
         step: 1,
 		picked: '',
 		checked: [],
-		text: ''
+		text: '',
     },
 	methods: {
 		reset: function() {
@@ -71,6 +71,17 @@ var app = new Vue({
 		},
 		clicksuccess: function() {
 			alert("submited");
+		}
+	},
+	computed: {
+		onedis() {
+			return this.picked=== '';
+		},
+		twodis() {
+			return this.checked.length<2 || this.checked.length>3;
+		},
+		threedis() {
+			return 	this.text.length<50;
 		}
 	}
 });
