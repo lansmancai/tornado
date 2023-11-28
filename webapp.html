@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>调查问卷</title>
+</head>
+<body>
+    <div id="app">
+		<template v-if="step===1">
+			<input type="radio" v-model="picked" value="male" id="male">
+			<label for="html">男 </label>
+			<input type="radio" v-model="picked" value="female" id="female">
+			<label for="js">女</label>
+			<input type="radio" v-model="picked" value="secret" id="secret">
+			<label for="css">保密</label>
+			<br>
+			<br>
+			<br>
+			<br>
+			<button @click="step=step+1">下一步</button>
+			<button @click="reset">重置</button>
+		</template>
+		<template v-if="step===2">
+			<input type="checkbox" v-model="checked" value="football" id="football">
+			<label for="html">足球</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="basketball" id="basketball">
+			<label for="js">篮球</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="reading" id="reading">
+			<label for="css">阅读</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="running" id="running">
+			<label for="css">跑步</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="painting" id="painting">
+			<label for="css">画画</label>
+			<br>
+			<p>选择的项是：{{ checked }}</p>
+			<button @click="step=step+1">下一步</button>
+			<button @click="step=step-1">上一步</button>
+			<button @click="reset">重置</button>
+		</template>
+		<template v-if="step===3">
+			<p>介绍你自己</p>
+			<textarea v-model="text" placeholder="输入..."></textarea>
+			<br>
+			<p>输入的是：{{ text }}</p>
+			<button @click="clicksuccess">提交</button>
+			<button @click="step=step-1">上一步</button>
+			<button @click="reset">重置</button>
+		</template>	
+    </div>
+
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        step: 1,
+		picked: '',
+		checked: [],
+		text: ''
+    },
+	methods: {
+		reset: function() {
+			this.step=1;
+			this.picked='';
+			this.checked=[];
+			this.text='';
+		},
+		clicksuccess: function() {
+			alert("submited");
+		}
+	}
+});
+</script>
+</body>
+</html>
