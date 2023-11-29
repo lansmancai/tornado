@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>调查问卷</title>
+</head>
+<body>
+    <div id="app">
+		<template v-if="step===1">
+			<p>1.请问你的性别是:</p>
+			<input type="radio" v-model="picked" value="male" id="male">
+			<label for="html">男 </label>
+			<input type="radio" v-model="picked" value="female" id="female">
+			<label for="js">女</label>
+			<input type="radio" v-model="picked" value="secret" id="secret">
+			<label for="css">保密</label>
+			<br>
+			<br>
+			<br>
+			<br>
+			<my-button :dis="onedis" :wtype="1" @buttonclick="buttclickhandle">下一步</my-button>
+			<my-button :wtype="3" @buttonclick="buttclickhandle">重置</my-button>
+		</template>
+		<template v-if="step===2">
+			<p>2.请选择你的兴趣爱好:</p>
+			<input type="checkbox" v-model="checked" value="football" id="football">
+			<label for="html">足球</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="basketball" id="basketball">
+			<label for="js">篮球</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="reading" id="reading">
+			<label for="css">阅读</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="running" id="running">
+			<label for="css">跑步</label>
+			<br>
+			<input type="checkbox" v-model="checked" value="painting" id="painting">
+			<label for="css">画画</label>
+			<br>
+			<my-button :dis="twodis" :wtype="1" @buttonclick="buttclickhandle">下一步</my-button>
+			<my-button  :wtype="2" @buttonclick="buttclickhandle">上一步</my-button>
+			<my-button :wtype="3" @buttonclick="buttclickhandle">重置</my-button>
+		</template>
+		<template v-if="step===3">
+			<p>请介绍一下自己</p>
+			<textarea v-model="text" rows="10" cols="30" placeholder="输入..."></textarea>
+			<br>
+			<my-button :dis="threedis" :wtype="4" @buttonclick="buttclickhandle">提交</my-button>
+			<my-button  :wtype="2" @buttonclick="buttclickhandle">上一步</my-button>
+			<my-button :wtype="3" @buttonclick="buttclickhandle">重置</my-button>
+		</template>	
+    </div>
+
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+Vue.component('my-button', {
+        props: {
+		    dis: {
+            type: Boolean,
+            default: false
+			},
+			wtype: {
+			type: Number,
+			default: 1
+			}
+		},
+        template: '<button :disabled="dis" @click="handleClick"><slot></slot></button>',
+		methods: {
+			handleClick: function () {
+                this.$emit('buttonclick', this.wtype);
+            }
+		}
+    });
+var app = new Vue({
+    el: '#app',
+    data: {
+        step: 1,
+		picked: '',
+		checked: [],
+		text: '',
+    },
+	methods: {
+		reset: function() {
+			this.step=1;
+			this.picked='';
+			this.checked=[];
+			this.text='';
+		},
+		clicksuccess: function() {
+			alert("submited");
+		},
+		buttclickhandle: function(wtype) {
+			if(wtype===1) {
+				this.step=this.step+1;
+			}
+			else if(wtype===2) {
+				this.step=this.step-1;
+			}
+			else if(wtype===3) {
+				this.reset();
+			}
+			else if(wtype===4) {
+				this.clicksuccess();
+			}
+		}
+	},
+	computed: {
+		onedis() {
+			return this.picked=== '';
+		},
+		twodis() {
+			return this.checked.length<2 || this.checked.length>3;
+		},
+		threedis() {
+			return 	this.text.length<50;
+		}
+	}
+});
+</script>
+</body>
+</html>
