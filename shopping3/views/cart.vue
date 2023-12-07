@@ -114,6 +114,10 @@
                     window.alert('购买成功');
                 })
             }
+        },
+		mounted () {
+            this.$store.dispatch('getProductList');
+			this.$store.commit('updateCartList');
         }
     }
 </script>

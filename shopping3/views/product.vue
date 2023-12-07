@@ -40,6 +40,7 @@
         },
         mounted () {
             this.getProduct();
+			this.$store.commit('updateCartList');
         }
     }
 </script>
